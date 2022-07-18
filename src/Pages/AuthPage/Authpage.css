@@ -1,0 +1,21 @@
+.authpagelogo img{width: 84px;
+    margin-top: 20px;
+    margin-left: 7px;
+    height: 64px;
+    object-fit: fill;
+}
+.BuildProfiles img{
+        width: 66px;
+        margin-top: 20px;
+        margin-left: 7px;
+        height: 50px;
+        object-fit: fill;
+}
+.screen{
+    height: 30vh;
+}
+.border{
+    border: 3px solid;
+    border-radius: 50%;
+    padding: 12px;
+}
