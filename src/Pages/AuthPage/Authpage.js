@@ -34,7 +34,6 @@ const Authpage = () => {
             ActiveStatus: true,
             uid: user.uid
         });
-        navigate('/BuildProfile')
     }
 
 
@@ -48,6 +47,9 @@ const Authpage = () => {
         signInWithFacebook()
         signIn()
 
+    }
+    if(user3||user2||user1){
+        navigate('/BuildProfile')
     }
     return (
         <div className='px-5'>

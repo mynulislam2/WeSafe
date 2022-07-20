@@ -1,47 +1,89 @@
 import React from 'react';
-import safe from '../../assets/safe.png'
 import { FaAngleRight } from "react-icons/fa";
-
+import Header from '../../Component/Header/Header';
+import {Link } from "react-router-dom"
+import { FaProcedures, FaSyringe, FaMedkit, FaAllergies, FaPills, FaAddressCard, FaStethoscope, FaUserCircle } from "react-icons/fa";
 const Mainpage = () => {
+    const Features = [
+        {
+            icon: FaAddressCard,
+            tittle: "Emergency Contacts",
+            Description: "Your Emergency Contacts",
+        link:"emergency-contact"
+        },
+        {
+            icon: FaStethoscope,
+            tittle: "Medical Conditions",
+            Description: "Temporary ,BP,Glucose etc",
+            link:"medical-condition"
+        },
+        {
+            icon: FaPills,
+            tittle: "Medications",
+            Description: "Pill that you take",
+            link:"medications"
+        },
+        {
+            icon: FaAllergies,
+            tittle: "Allergies",
+            Description: "With food ,medicine,climate,weather",
+            link:"allergies"
+        },
+        {
+            icon: FaSyringe,
+            tittle: "Vaccination",
+            Description: "immunization and vaccines",
+            link:"vaccination"
+        },
+        {
+            icon: FaProcedures,
+            tittle: "Procedures",
+            Description: "Operation and procedures",
+            link:"procedures",
+        },
+        {
+            icon: FaMedkit,
+            tittle: "Insurances",
+            Description: "Insurance detail",
+            link:"insurance"
+        }
+    ]
+
     return (
-        <div className='bg-accent h-screen'>
-            <div class="navbar bg-primary">
-                <div class="flex-1">
-                    <img className='w-12' src={safe} alt="" />
-                    <a class="btn btn-ghost normal-case text-xl text-white">WeSafe</a>
-                </div>
-                <div class="flex-none gap-2">
-                    <div class="dropdown dropdown-end">
-                        <label tabindex="0" class="btn btn-ghost btn-circle avatar">
-                            <div class="w-10 rounded-full">
-                                <img src="https://placeimg.com/80/80/people" />
-                            </div>
-                        </label>
-                        <ul tabindex="0" class="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52">
-                            <li>
-                                <a class="justify-between">
-                                    Profile
-                                    <span class="badge">New</span>
-                                </a>
-                            </li>
-                            <li><a>Settings</a></li>
-                            <li><a>Logout</a></li>
-                        </ul>
+        <div className='bg-accent'>
+            <Header></Header>
+            <div className=" bg-white w-1/2 p-3 rounded-xl mx-auto mt-5">
+                <div className='flex justify-center mx-auto justify-between  items-center'>
+                    <div className='flex items-center'>
+                        <div class="text-center bg-accent p-3 rounded-xl mr-2">
+                            <FaUserCircle></FaUserCircle>
+                        </div>
+                        <h1 className="text-xl font-semibold ">Personal Profile</h1>
                     </div>
-                </div>
-            </div>
-            <div>
-                <div className='flex justify-center items-center  w-2/4'>
-                    <div class="text-center bg-accent p-3 rounded-xl">
-                        icon
-                    </div>
-                    <h1 className="text-xl font-semibold">Personal Profile</h1>
                     <p className="text-primary">
                         <FaAngleRight></FaAngleRight>
                     </p>
                 </div>
             </div>
+            <div className="grid grid-cols-2 w-1/2 mx-auto mb-5">           {
+                Features.map((Feature) => {
+                    return <Link to={Feature.link}>
+                    <div className=" bg-white cursor-pointer  w-64 p-3 rounded-xl mx-auto mt-5">
+                        <div className=' justify-center mx-auto   items-center'>
+                            <div className='flex items-center'>
+                                <div class="text-center bg-accent p-3 rounded-xl mr-2">
 
+                                    <Feature.icon />
+                                </div>
+                            </div>
+                            <h1 className="text-xl font-semibold ">{Feature.tittle}</h1>
+                            <p>{Feature.Description}</p>
+                        </div>
+                    </div>
+                    </Link> 
+                })
+            }</div>
+ 
 
         </div>
     );
