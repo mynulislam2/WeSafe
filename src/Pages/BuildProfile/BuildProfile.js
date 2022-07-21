@@ -1,6 +1,6 @@
 import React from 'react';
 import safe from '../../assets/safe.png'
-import  BuildProfiles from '../../assets/buildProfile.gif'
+import  BuildProfiles from '../../assets/wesafeassets/image/buildProfiles.png'
 import { FaArrowRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
@@ -10,7 +10,7 @@ const navigate=useNavigate()
         navigate('/personalProfile')
 }
     return (
-        <div>
+        <div className="bg-white">
             <div className="flex justify-center">
                 <div className=' w-1/6 flex justify-center items-center screen'>
                     <div class="avatar BuildProfiles">
