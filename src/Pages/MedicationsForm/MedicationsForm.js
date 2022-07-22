@@ -1,12 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
+import useForm from '../../Hooks/useForm';
 
 const MedicationsForm = () => {
+    const [state, setState] = useState({})
+
     const handleFormSubmit = (event) => {
+        event.preventDefault()
         const name = event.target.name.value
         const notes = event.target.notes.value
         const frequency = event.target.frequency.value
         const dosage = event.target.dosage.value
+
+        let Data = `
+        {
+            "data":{
+                "Medication Name": "${name}",
+                "Medication Dosage": "${dosage}",
+                "Medication Notes": "${frequency}",
+                "Medication Frequency": "${notes}"
+            }
+        }
+
+        
+        `
+        setState(Data)
     }
+    useForm(state, "vaccinations")
+
     return (
         <>
             <h1 className="text-center text-3xl font-semibold mt-5">Medications</h1>

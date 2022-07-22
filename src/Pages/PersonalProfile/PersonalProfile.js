@@ -4,7 +4,6 @@ import { FaPen } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { auth, storage, db } from '../../firebase.init';
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { async } from '@firebase/util';
 import { doc, setDoc } from "firebase/firestore";
 import Header from '../../Component/Header/Header';
 const PersonalProfile = () => {
@@ -77,8 +76,8 @@ const PersonalProfile = () => {
     }
     const handleSubmit = async (event) => {
         event.preventDefault()
-        const name = await event.target.name.value
-        const email = await event.target.email.value
+        const name = await event.target.name.value||user.displayName
+        const email = await event.target.email.value||user.email
         const phoneNumber = await event.target.number.value
         const addressHouse = await event.target.houseNumber.value
         const addressLocality = await event.target.houseName.value
@@ -91,20 +90,6 @@ const PersonalProfile = () => {
         const height = await event.target.height.value + " " + event.target.heightUnit.value
         const weight = await event.target.weight.value + " " + event.target.weightUnit.value
         const bloodGroup = await event.target.bloodGroup.value
-        console.log(name,
-            email,
-            addressCity,
-            addressCountry,
-            addressState,
-            addressPinCode,
-            addressHouse,
-            addressLocality,
-            height,
-            weight,
-            gender,
-            dob,
-            bloodGroup,
-            phoneNumber)
         setPersonalProfiles({
             name,
             email,

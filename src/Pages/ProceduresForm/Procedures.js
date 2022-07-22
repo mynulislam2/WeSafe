@@ -1,12 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
+import useForm from '../../Hooks/useForm';
 
 const Procedures = () => {
+    const [state, setState] = useState("")
+
     const handleFormSubmit = (event) => {
+        event.preventDefault()
         const name = event.target.name.value
         const notes = event.target.notes.value
         const doctorName = event.target.doctorName.value
+        const status = event.target.status.value
+        const operationDate = event.target.operation.value
         const doctorNumber = event.target.doctorNumber.value
+        let Data = `
+{        "data":
+            {
+                "Procedures Date of Procedure": "${operationDate}",
+                "Procedures Status": "${status}",
+                "Procedures Notes": "${notes}",
+                "Procedures Name": "${name}",
+                "Procedures Doctor Phone Number": "${doctorNumber}",
+                "Procedures Doctor Name": "${doctorName}"
+            }
+        }
+        
+
+        
+        `
+        setState(Data)
     }
+    useForm(state, "procedures")
 
     return (
         <div>
@@ -44,7 +67,7 @@ const Procedures = () => {
                                 <label class="label">
                                     <span class="label-text">Status</span>
                                 </label>
-                                <input type="text" placeholder="Ongoing/Completed" class="input input-bordered w-full max-w-xs" />
+                                <input name="status" type="text" placeholder="Ongoing/Completed" class="input input-bordered w-full max-w-xs" />
                             </div>
 
 
@@ -54,7 +77,7 @@ const Procedures = () => {
                                 <label class="label">
                                     <span class="label-text">Date of Operation</span>
                                 </label>
-                                <input type="date" class="input input-bordered w-full max-w-xs" />
+                                <input type="date" name="operation" class="input input-bordered w-full max-w-xs" />
                             </div>
 
 

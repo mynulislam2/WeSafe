@@ -1,10 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
+import useForm from '../../Hooks/useForm';
 
 const MedicalCondiationForm = () => {
+    const [state, setState] = useState({})
+
     const handleFormSubmit = (event) => {
+        event.preventDefault()
         const name = event.target.name.value
         const notes = event.target.notes.value
+
+        let Data = `{
+            "data":{
+    "Medical Name": "${name}",
+    "Medical Notes": "${notes}"
+
+}
+        }
+
+        
+        `
+        setState(Data)
     }
+    useForm(state, "mediccond")
 
 
     return (

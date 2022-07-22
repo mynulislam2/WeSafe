@@ -1,11 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
+import useForm from '../../Hooks/useForm';
 
 const EmergencyContactForm = () => {
+    const [state, setState] = useState({})
     const handleFormSubmit = (event) => {
+        event.preventDefault();
         const name = event.target.name.value
         const relation = event.target.relation.value
-        const check = event.target.check.value
+        const phone = event.target.phone.value
+        let check = event.target.check.value
+        if (check == 'on') {
+            check = true
+        }
+        else {
+            check = false
+        }
+        let Data = `{
+            "data":{
+                "Emergency Contact Name": "${name}",
+                "Emergency Contact Number": "${phone}",
+                "Emergency Contact Relation": "${relation}",
+                "trusted": "${check}"
+            }
+        }
+
+        
+        `
+        setState(Data)
     }
+    useForm(state, "emergencycont")
 
     return (
         <>
@@ -29,7 +52,7 @@ const EmergencyContactForm = () => {
                             <label class="label">
                                 <span class="label-text">Phone Number</span>
                             </label>
-                            <input type="text" placeholder="eg 967473469" class="input input-bordered w-full max-w-xs" />
+                            <input type="text" name="phone" placeholder="eg 967473469" class="input input-bordered w-full max-w-xs" />
                         </div>
                         <div class="form-control">
                             <label class="label cursor-pointer w-64">

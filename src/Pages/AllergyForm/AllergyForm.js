@@ -1,10 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
+import useForm from '../../Hooks/useForm';
 
 const AllergyForm = () => {
+    const [state, setState] = useState({})
+
     const handleFormSubmit = (event) => {
+        event.preventDefault();
         const name = event.target.name.value
         const notes = event.target.notes.value
+        let Data = `{
+            "data":{
+                "Allergies Name": "${name}",
+                "Allergies Notes": "${notes}"
+            }
+        }
+
+        
+        `
+        setState(Data)
+
     }
+    useForm(state, 'allergies')
+
     return (
         <>
             <h1 className="text-center text-3xl font-semibold mt-5">Allergy</h1>
