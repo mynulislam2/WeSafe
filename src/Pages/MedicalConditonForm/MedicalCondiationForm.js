@@ -4,7 +4,7 @@ const MedicalCondiationForm = () => {
     const handleFormSubmit = (event) => {
         const name = event.target.name.value
         const notes = event.target.notes.value
-    } 
+    }
 
 
     return (

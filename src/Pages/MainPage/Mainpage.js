@@ -52,22 +52,24 @@ const Mainpage = () => {
     return (
         <div className='bg-accent'>
             <Header></Header>
-            <div className=" bg-white w-1/2 p-3 rounded-xl mx-auto mt-5">
-                <div className='flex justify-center mx-auto justify-between  items-center'>
-                    <div className='flex items-center'>
-                        <div class="text-center bg-accent p-3 rounded-xl mr-2">
-                            <FaUserCircle></FaUserCircle>
+            <Link to='/personalProfile'>
+                <div className=" bg-white w-1/2 p-3 rounded-xl mx-auto mt-5">
+                    <div className='flex justify-center mx-auto justify-between  items-center'>
+                        <div className='flex items-center'>
+                            <div class="text-center bg-accent p-3 rounded-xl mr-2">
+                                <FaUserCircle></FaUserCircle>
+                            </div>
+                            <h1 className="text-xl font-semibold ">Personal Profile</h1>
                         </div>
-                        <h1 className="text-xl font-semibold ">Personal Profile</h1>
+                        <p className="text-primary">
+                            <FaAngleRight></FaAngleRight>
+                        </p>
                     </div>
-                    <p className="text-primary">
-                        <FaAngleRight></FaAngleRight>
-                    </p>
                 </div>
-            </div>
+            </Link>
             <div className="grid grid-cols-2 w-1/2 mx-auto mb-5">           {
                 Features.map((Feature) => {
-                    return <Link to={`${Feature.link}`} >
+                    return <Link to={`mainpage/${Feature.link}`} >
                         <div className=" bg-white cursor-pointer  w-64 p-3 rounded-xl mx-auto mt-5">
                             <div className=' justify-center mx-auto   items-center'>
                                 <div className='flex items-center'>

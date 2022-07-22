@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import { useAuthState, useSignInWithFacebook, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import { collection, query, getDocs } from "firebase/firestore";
 import { auth, db } from '../../firebase.init';
 import { async } from '@firebase/util';
@@ -14,6 +14,11 @@ const Authpage = () => {
     const [signInWithFacebook, user2, loading2, error2] = useSignInWithFacebook(auth);
     const [user3, loading3, error3] = useAuthState(auth);
     let navigate = useNavigate();
+
+
+
+
+
     const [user, setUser] = useState({
         uid: ""
     });
@@ -48,8 +53,20 @@ const Authpage = () => {
         signIn()
 
     }
-    if(user3||user2||user1){
-        navigate('/BuildProfile')
+    if (user3 || user2 || user1) {
+        const getData = async () => {
+            const docRef = doc(db, `Users/${user3?.uid}/ChildList/child1/data`, "personal_information");
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                navigate('/')
+            } else {
+                navigate('/BuildProfile')
+                // doc.data() will be undefined in this case
+                console.log("No such document!");
+            }
+        }
+        getData()
+
     }
     return (
         <div className='px-5'>

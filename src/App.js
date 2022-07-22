@@ -3,6 +3,7 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
+import RequireAuth from "./Component/RequireAuth/RequireAuth";
 import AllergyForm from "./Pages/AllergyForm/AllergyForm";
 import Authpage from "./Pages/AuthPage/Authpage";
 import BuildProfile from "./Pages/BuildProfile/BuildProfile";
@@ -22,11 +23,16 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route  path="/auth" element={<Authpage></Authpage>} />
-          <Route  path="/BuildProfile" element={<BuildProfile></BuildProfile>} />
-          <Route  path="/personalProfile" element={<PersonalProfile></PersonalProfile>} />
-          <Route  path="/MainPage" element={<Mainpage></Mainpage>} />
-          <Route  path="/MainPage/:id" element={<Features></Features>} />
+        <Route path="/" element={
+            <RequireAuth>
+              <Mainpage></Mainpage>
+            </RequireAuth>
+
+          } />
+          <Route path="/auth" element={<Authpage></Authpage>} />
+          <Route path="/BuildProfile" element={<BuildProfile></BuildProfile>} />
+          <Route path="/personalProfile" element={<PersonalProfile></PersonalProfile>} />
+          <Route path="/mainpage/:id" element={<Features></Features>} />
           <Route path="mainpage/emergency-contact/emergency-contact-details" element={<EmergencyContactForm></EmergencyContactForm>} />
           <Route path="mainpage/medical-condition/medical-condition-details" element={<MedicalCondiationForm></MedicalCondiationForm>} />
           <Route path="mainpage/medications/medications-details" element={<MedicationsForm></MedicationsForm>} />

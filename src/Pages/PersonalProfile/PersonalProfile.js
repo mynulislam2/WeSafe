@@ -139,7 +139,7 @@ const PersonalProfile = () => {
     let PersonalProfilesData = JSON.parse(localStorage.getItem("PersonalProfiles"))
     let PhotoUrl = JSON.parse(localStorage.getItem("PhotoUrl"))
     if (PersonalProfiles.info_type){
-        navigate("/mainpage")
+        navigate("/")
 
     }
         return (
