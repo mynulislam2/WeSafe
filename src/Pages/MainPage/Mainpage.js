@@ -14,7 +14,7 @@ const Mainpage = () => {
         {
             icon: FaStethoscope,
             tittle: "Medical Conditions",
-            Description: "Temporary ,BP,Glucose etc",
+            Description: "Temperature,BP,Glucose etc",
             link: "medical-condition"
         },
         {
@@ -26,25 +26,25 @@ const Mainpage = () => {
         {
             icon: FaAllergies,
             tittle: "Allergies",
-            Description: "With food ,medicine,climate,weather",
+            Description: "With food,medicine and climate",
             link: "allergies"
         },
         {
             icon: FaSyringe,
             tittle: "Vaccination",
-            Description: "immunization and vaccines",
+            Description: "Immunization and Vaccines",
             link: "vaccination"
         },
         {
             icon: FaProcedures,
             tittle: "Procedures",
-            Description: "Operation and procedures",
+            Description: "Operation and Procedures",
             link: "procedures",
         },
         {
             icon: FaMedkit,
             tittle: "Insurances",
-            Description: "Insurance detail",
+            Description: "Insurance details",
             link: "insurance"
         }
     ]
@@ -53,32 +53,32 @@ const Mainpage = () => {
         <div className='bg-accent'>
             <Header></Header>
             <Link to='/personalProfile'>
-                <div className=" bg-white w-1/2 p-3 rounded-xl mx-auto mt-5">
+                <div className=" bg-white w-11/12 lg:w-1/2 p-3 rounded-xl mx-auto mt-5">
                     <div className='flex justify-center mx-auto justify-between  items-center'>
                         <div className='flex items-center'>
-                            <div class="text-center bg-accent p-3 rounded-xl mr-2">
+                            <div class="text-center bg-accent p-3 text-primary rounded-xl mr-2">
                                 <FaUserCircle></FaUserCircle>
                             </div>
-                            <h1 className="text-xl font-semibold ">Personal Profile</h1>
+                            <h1 className="text-base font-medium ">Personal Profile</h1>
                         </div>
-                        <p className="text-primary">
+                        <p className="text-primary ">
                             <FaAngleRight></FaAngleRight>
                         </p>
                     </div>
                 </div>
             </Link>
-            <div className="grid grid-cols-2 w-1/2 mx-auto mb-5">           {
+            <div className="grid grid-cols-2 gap-x-2 px-2 w-full lg:w-1/2 mx-auto mb-5">           {
                 Features.map((Feature) => {
                     return <Link to={`mainpage/${Feature.link}`} >
-                        <div className=" bg-white cursor-pointer  w-64 p-3 rounded-xl mx-auto mt-5">
+                        <div className=" bg-white cursor-pointer h-44  p-2   rounded-xl mx-auto mt-5">
                             <div className=' justify-center mx-auto   items-center'>
                                 <div className='flex items-center'>
-                                    <div class="text-center bg-accent p-3 rounded-xl mr-2">
+                                    <div class="text-center text-primary bg-accent p-3 rounded-xl">
                                         <Feature.icon />
                                     </div>
                                 </div>
-                                <h1 className="text-xl font-semibold ">{Feature.tittle}</h1>
-                                <p>{Feature.Description}</p>
+                                <h1 style={{fontSize:"15px"}} className=" font-medium mt-4">{Feature.tittle}</h1>
+                                <p className="mt-2 text-sm">{Feature.Description}</p>
                             </div>
                         </div>
                     </Link>

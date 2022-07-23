@@ -62,7 +62,7 @@ const Features = () => {
             {
                 FeatureData.map((data) => {
                     if (data.link == id) {
-                        return <div><div className='flex justify-center items-center' style={{ height: "85vh" }}>
+                        return <div><div className='flex justify-center items-center' style={{ height: "80vh" }}>
                             <div>
                                 <div className='flex justify-center'><data.icon color='#6574cf'  size={200} /></div>
                                 <p className='text-center mt-5'>
@@ -72,7 +72,7 @@ const Features = () => {
 
                         </div>
                             <Link to={`${data.formLink}`}>
-                                <div style={{ width: "60px", height: "60px" }} className='w-5 cursor-pointer flex justify-center items-center rounded-full bg-primary absolute right-5 '>
+                                <div style={{ width: "60px", height: "60px" }} className='w-5 cursor-pointer flex justify-center items-center rounded-full bg-primary absolute right-10 '>
                                     <p className='text-white font-bold text-3xl'>+</p>
                                 </div>
 
