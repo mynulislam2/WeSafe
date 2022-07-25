@@ -26,10 +26,26 @@ const Header = () => {
                                 Profile
                             </Link>
                         </li>
+                        <li className="justify-between">
+                            <Link to="/addAnotherProfile">Add another Profile</Link>
+                        </li>                        
+                        <li className="justify-between">
+                            <Link to="#">Contact us</Link>
+                        </li>
+                        <li><Link to="#">Invite</Link>
+                        </li>
+                        <li><Link to="#">Delete Account</Link>
+                        </li>
+                        <li>
+                            <Link to="#">Support FAQ'S</Link>
+                        </li>
                         <li onClick={() => {
                             signOut(auth)
-
-                        }}> <Link to="/auth">Logout</Link> </li>
+                        }}> <Link to="/auth">Logout</Link>
+                        </li>
+                        <li>
+                            <Link to="#">Terms of Service</Link>
+                        </li>
                     </ul>
                 </div>
             </div>

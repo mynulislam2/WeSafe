@@ -5,13 +5,19 @@ import { useNavigate } from "react-router-dom";
 import { auth, storage, db } from '../../firebase.init';
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
+import DefaultUser from '../../assets/wesafeassets/image/defaultimage.jpg'
 import Header from '../../Component/Header/Header';
-const PersonalProfile = () => {
+const AddAnotherProfile = () => {
+    const generateUniqueId = require('generate-unique-id');
     const [user, loading, error] = useAuthState(auth)
     const [Date, setDate] = useState("")
     const [Gender, setGender] = useState("")
     const [File, setFile] = useState("")
     const navigate = useNavigate()
+    const Child = generateUniqueId({
+        length: 20,
+        useLetters: true
+      });
     const BloodGroups = [
         "A +ve",
         "A -ve",
@@ -38,7 +44,8 @@ const PersonalProfile = () => {
         bloodGroup: "",
         phoneNumber: "",
         info_type: "",
-        profilePicUrl: ""
+        profilePicUrl: "",
+        Child:Child
     })
 
     const Profile = () => {
@@ -76,8 +83,8 @@ const PersonalProfile = () => {
     }
     const handleSubmit = async (event) => {
         event.preventDefault()
-        const name = await event.target.name.value||user.displayName
-        const email = await event.target.email.value||user.email
+        const name = await event.target.name.value
+        const email = await event.target.email.value
         const phoneNumber = await event.target.number.value
         const addressHouse = await event.target.houseNumber.value
         const addressLocality = await event.target.houseName.value
@@ -106,16 +113,13 @@ const PersonalProfile = () => {
             bloodGroup,
             phoneNumber,
             info_type: "personal_profile",
-            profilePicUrl: File || user.photoURL
+            profilePicUrl: File 
         })
-        // await setDoc(doc(db, `Users/${user?.uid}/ChildList`,"child2"), {
-        //     ActiveStatus: true,
-        //     uid: user.uid
-        // });
+
     }
 
     if (PersonalProfiles.info_type) {
-         setDoc(doc(db, `Users/${user?.uid}/ChildList/child1/data`, "personal_information"), {
+         setDoc(doc(db, `Users/${user?.uid}/ChildList/${'child'+Child}/data`, "personal_information"), {
             ...PersonalProfiles
         });
         localStorage.setItem("PersonalProfiles", JSON.stringify(PersonalProfiles));
@@ -129,14 +133,13 @@ const PersonalProfile = () => {
         return (
             <div className="">
                 <Header></Header>
-                <h1 className='text-center text-3xl mt-2 font-semibold'>Personal Profile</h1>
                 <div className="flex justify-center">
                     <div className="mb-2">
                         <div className="flex justify-center mt-10">
                             <div className="relative">
                                 <div className="avatar ">
                                     <div className="w-24 rounded-full">
-                                        <img src={PhotoUrl ? PhotoUrl : user?.photoURL} alt="" />
+                                        <img src={PhotoUrl ? PhotoUrl :DefaultUser} alt="" />
                                     </div>
                                 </div>
                                 <div onClick={Profile} className="cursor-pointer flex justify-center absolute top-14 left-14 ">
@@ -155,7 +158,7 @@ const PersonalProfile = () => {
                                 <label className="label">
                                     <span className="label-text">name <span className=' text-red-600'>*</span></span>
                                 </label>
-                                <input type="text" defaultValue={user?.displayName} required name="name" placeholder="Mynul" className="input input-bordered w-full max-w-xs" />
+                                <input type="text"  required name="name" placeholder="Mynul" className="input input-bordered w-full max-w-xs" />
                                 <label className="label">
                                 </label>
                             </div>
@@ -171,7 +174,7 @@ const PersonalProfile = () => {
                                 <label className="label">
                                     <span className="label-text">Email </span>
                                 </label>
-                                <input type="email" defaultValue={user?.email} name='email' placeholder="ex. abc@gmail.com" className="input input-bordered w-full max-w-xs" />
+                                <input type="email"  name='email' placeholder="ex. abc@gmail.com" className="input input-bordered w-full max-w-xs" />
                                 <label className="label">
                                 </label>
                             </div>
@@ -261,4 +264,4 @@ const PersonalProfile = () => {
         );
 };
 
-export default PersonalProfile;
+export default AddAnotherProfile;

@@ -9,50 +9,50 @@ const Features = () => {
             icon: FaAddressCard,
             tittle: "Emergency Contacts",
             Description: "emergency contacts details such as Name,Relation ,Phone Number",
-            link: "emergency-contact",
-            formLink: "emergency-contact-details"
+            link: "emergencycont",
+            formLink: "details"
         },
         {
             icon: FaStethoscope,
             tittle: "Medical Conditions",
             Description: "medical condition details such as Name and Note",
-            link: "medical-condition",
-            formLink: "medical-condition-details"
+            link: "mediccond",
+            formLink: "details"
         },
         {
             icon: FaPills,
             tittle: "Medications",
             Description: "medications details such as Name,Notes, Dosage",
             link: "medications",
-            formLink: "medications-details"
+            formLink: "details"
         },
         {
             icon: FaAllergies,
             tittle: "Allergies",
             Description: "allergies details such as Name,Notes",
             link: "allergies",
-            formLink: "allergies-details"
+            formLink: "details"
         },
         {
             icon: FaSyringe,
             tittle: "Vaccination",
             Description: "vaccination details such as Name,Notes, Date",
-            link: "vaccination",
-            formLink: "vaccination-details"
+            link: "vaccinations",
+            formLink: "details"
         },
         {
             icon: FaProcedures,
             tittle: "Procedures",
             Description: "procedures details such as Name,Notes, Doctor's Name,Doctor's Number,Status,Date of Operation",
             link: "procedures",
-            formLink: "procedures-details"
+            formLink: "details"
         },
         {
             icon: FaMedkit,
             tittle: "Insurances",
             Description: "Insurance Name and policy Number",
             link: "insurance",
-            formLink: "insurance-details"
+            formLink: "details"
         }
     ]
     const { id } = useParams()

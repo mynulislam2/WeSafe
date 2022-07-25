@@ -10,7 +10,7 @@ const VaccinationForm = () => {
         const notes = event.target.notes.value
         const date = event.target.date.value
 
-        let Data = `"{data":{
+        let Data = `{"data":{
     "Vaccinations Name": "${name}",
     "Vaccinations Notes": "${notes}",
     "Vaccinations Date": "${date}"

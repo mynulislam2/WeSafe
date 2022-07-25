@@ -9,13 +9,13 @@ const Mainpage = () => {
             icon: FaAddressCard,
             tittle: "Emergency Contacts",
             Description: "Your Emergency Contacts",
-            link: "emergency-contact"
+            link: "emergencycont"
         },
         {
             icon: FaStethoscope,
             tittle: "Medical Conditions",
-            Description: "Temperature,BP,Glucose etc",
-            link: "medical-condition"
+            Description: "Temperature, BP, Glucose etc",
+            link: "mediccond"
         },
         {
             icon: FaPills,
@@ -26,14 +26,14 @@ const Mainpage = () => {
         {
             icon: FaAllergies,
             tittle: "Allergies",
-            Description: "With food,medicine and climate",
+            Description: "With food, medicine and climate",
             link: "allergies"
         },
         {
             icon: FaSyringe,
             tittle: "Vaccination",
             Description: "Immunization and Vaccines",
-            link: "vaccination"
+            link: "vaccinations"
         },
         {
             icon: FaProcedures,
@@ -69,7 +69,7 @@ const Mainpage = () => {
             </Link>
             <div className="grid grid-cols-2 gap-x-2 px-2 w-full lg:w-1/2 mx-auto mb-5">           {
                 Features.map((Feature) => {
-                    return <Link to={`mainpage/${Feature.link}`} >
+                    return <Link to={`/${Feature.link}`} >
                         <div className=" bg-white cursor-pointer h-44  p-2   rounded-xl mx-auto mt-5">
                             <div className=' justify-center mx-auto   items-center'>
                                 <div className='flex items-center'>

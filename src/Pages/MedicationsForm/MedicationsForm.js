@@ -16,8 +16,8 @@ const MedicationsForm = () => {
             "data":{
                 "Medication Name": "${name}",
                 "Medication Dosage": "${dosage}",
-                "Medication Notes": "${frequency}",
-                "Medication Frequency": "${notes}"
+                "Medication Notes": "${notes}",
+                "Medication Frequency": "${frequency}"
             }
         }
 
@@ -25,7 +25,7 @@ const MedicationsForm = () => {
         `
         setState(Data)
     }
-    useForm(state, "vaccinations")
+    useForm(state, "medications")
 
     return (
         <>

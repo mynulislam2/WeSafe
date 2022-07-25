@@ -4,7 +4,6 @@ import './Authpage.css'
 import { useNavigate } from "react-router-dom";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import { useAuthState, useSignInWithFacebook, useSignInWithGoogle } from 'react-firebase-hooks/auth';
-
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { collection, query, getDocs } from "firebase/firestore";
 import { auth, db } from '../../firebase.init';
@@ -14,11 +13,6 @@ const Authpage = () => {
     const [signInWithFacebook, user2, loading2, error2] = useSignInWithFacebook(auth);
     const [user3, loading3, error3] = useAuthState(auth);
     let navigate = useNavigate();
-
-
-
-
-
     const [user, setUser] = useState({
         uid: ""
     });
