@@ -79,7 +79,7 @@ const TakenFeatures = () => {
                     {
                         data?.map((data) => {
                             console.log(data)
-                            return <div className='w-1/2 mx-auto bg-white p-5 rounded-xl mt-5'>
+                            return <div className=' w-11/12 mx-auto bg-white p-5 rounded-xl mt-5'>
                                 <h1 className="font-medium">
                                     {
                                         data['Emergency Contact Name']
