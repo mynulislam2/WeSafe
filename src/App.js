@@ -18,9 +18,21 @@ import PersonalProfile from "./Pages/PersonalProfile/PersonalProfile";
 import Procedures from "./Pages/ProceduresForm/Procedures";
 import TakenFeatures from "./Pages/TakenFeatures/TakenFeatures";
 import VaccinationForm from "./Pages/VaccinationForm/VaccinationForm";
-
+import React, { useState, useEffect } from 'react';
+import InitialImage from '../src/assets/wesafeassets/image/splash_screen_without_text-03.jpg'
+import { Fade, Slide } from "react-reveal";
 
 function App() {
+  const [spinner, setSpinner] = useState(true);
+  useEffect(() => {
+    setTimeout(() => setSpinner(false), 1500)
+  }, []);
+  if (spinner) {
+    return <Fade>
+      <div className="h-screen"><img className="h-screen w-screen" src={InitialImage} alt=""/></div>;
+    </Fade>  
+  }
+
   return (
     <div className="App">
       <BrowserRouter>

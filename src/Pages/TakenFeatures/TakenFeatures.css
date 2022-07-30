@@ -1,0 +1,8 @@
+.swal-icon--custom{
+display: flex;
+justify-content: center;
+
+}
+.swal-icon--custom img{
+    background-color: #6574cf;
+}

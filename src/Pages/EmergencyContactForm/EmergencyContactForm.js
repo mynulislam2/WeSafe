@@ -23,8 +23,6 @@ const EmergencyContactForm = () => {
                 "trusted": "${check}"
             }
         }
-
-        
         `
         setState(Data)
     }

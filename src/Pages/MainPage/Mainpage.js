@@ -3,6 +3,7 @@ import { FaAngleRight } from "react-icons/fa";
 import Header from '../../Component/Header/Header';
 import { Link } from "react-router-dom"
 import { FaProcedures, FaSyringe, FaMedkit, FaAllergies, FaPills, FaAddressCard, FaStethoscope, FaUserCircle } from "react-icons/fa";
+import { Slide } from 'react-reveal';
 const Mainpage = () => {
     const Features = [
         {
@@ -50,9 +51,11 @@ const Mainpage = () => {
     ]
 
     return (
+       
         <div className='bg-accent'>
             <Header></Header>
-            <Link to='/personalProfile'>
+            <Slide right>
+                 <Link to='/personalProfile'>
                 <div className=" bg-white w-11/12 lg:w-1/2 p-3 rounded-xl mx-auto mt-5">
                     <div className='flex justify-center mx-auto justify-between  items-center'>
                         <div className='flex items-center'>
@@ -66,8 +69,8 @@ const Mainpage = () => {
                         </p>
                     </div>
                 </div>
-            </Link>
-            <div className="grid grid-cols-2 gap-x-2 px-2 w-full lg:w-1/2 mx-auto mb-5">           {
+              </Link>
+             <div className="grid grid-cols-2 gap-x-2 px-2 w-full lg:w-1/2 mx-auto mb-5">           {
                 Features.map((Feature) => {
                     return <Link to={`/${Feature.link}`} >
                         <div className=" bg-white cursor-pointer h-44  p-2   rounded-xl mx-auto mt-5">
@@ -85,8 +88,10 @@ const Mainpage = () => {
                 })
             }</div>
 
+        </Slide>
 
-        </div>
+        </div>            
+
     );
 };
 
