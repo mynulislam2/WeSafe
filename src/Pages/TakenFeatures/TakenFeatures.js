@@ -18,8 +18,9 @@ const TakenFeatures = () => {
     const [dataChecked, setDataChecked] = useState(true)
     const navigate = useNavigate()
     const deleteDocument = (docid) => {
-        swal("Are you sure?", {
+        swal("Are you sure To Delete?", {
             buttons: ["Cancel", true],
+
         })
             .then((res) => {
                 if (res === true) {

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import safe from '../../assets/safe.png'
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '../../firebase.init';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { deleteUser, signOut } from 'firebase/auth';
 import { FaUserPlus, FaTrash } from "react-icons/fa";
 import { MdOutlineContactSupport, MdOutlineShare } from "react-icons/md";
@@ -19,6 +19,7 @@ const Header = () => {
     const [Start, setStart] = useState(false)
     const [docId, setDocId] = useState([])
     const [isOnlice, setIsOnlice] = useState('')
+    const navigate=useNavigate()
     const getUser = async () => {
         try {
             const querySnapshot = await getDocs(collection(db, `Users/${user?.uid}/ChildList`));
@@ -88,7 +89,7 @@ const Header = () => {
 
     return (
         <div className="navbar bg-primary">
-            <div className="flex-1">
+            <div className="flex-1" onClick={()=>navigate("/")}>
                 <img className='w-12' src={safe} alt="" />
                 <a className="btn btn-ghost normal-case text-xl text-white">WeSafe</a>
             </div>

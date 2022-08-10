@@ -4,7 +4,7 @@ import { FaPen } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { auth, storage, db } from '../../firebase.init';
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { doc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, setDoc, collection, getDocs } from "firebase/firestore";
 import Header from '../../Component/Header/Header';
 const PersonalProfile = () => {
     const [user, loading, error] = useAuthState(auth)
@@ -12,6 +12,8 @@ const PersonalProfile = () => {
     const [Gender, setGender] = useState("")
     const [File, setFile] = useState("")
     const navigate = useNavigate()
+    const forceUpdate = React.useReducer(bool => !bool)[1];
+
     const BloodGroups = [
         "A +ve",
         "A -ve",
@@ -22,6 +24,7 @@ const PersonalProfile = () => {
         "O +ve",
         "O -ve",
     ]
+    const [ShowedProfile, setShowedProfile] = useState({})
     const [PersonalProfiles, setPersonalProfiles] = useState({
         name: "",
         email: "",
@@ -120,7 +123,7 @@ const PersonalProfile = () => {
         });
         setDoc(doc(db, `Users/${user?.uid}/ChildList/child1`), {
             ActiveStatus: true,
-            uid:user?.uid
+            uid: user?.uid
         });
         setDoc(doc(db, `Users/${user?.uid}`), {
             ActiveStatus: true
@@ -133,6 +136,19 @@ const PersonalProfile = () => {
         navigate("/")
 
     }
+    useEffect(() => {
+        const getPersonalInfo = async () => {
+            const querySnapshot = await getDocs(collection(db, `Users/${user?.uid}/ChildList/child1/data`));
+            querySnapshot.forEach(async (docs) => {
+                setShowedProfile(docs.data())
+                forceUpdate();
+            })
+        }
+        getPersonalInfo()
+        setGender(ShowedProfile?.gender)
+    console.log(ShowedProfile)
+}, [ShowedProfile?.gender]);
+
     return (
         <div className="">
             <Header></Header>
@@ -162,7 +178,7 @@ const PersonalProfile = () => {
                             <label className="label">
                                 <span className="label-text">name <span className=' text-red-600'>*</span></span>
                             </label>
-                            <input type="text" defaultValue={user?.displayName} required name="name" placeholder="Mynul" className="input input-bordered w-full max-w-xs" />
+                            <input type="text" defaultValue={user?.displayName || ShowedProfile?.name} required name="name" placeholder="Mynul" className="input input-bordered w-full max-w-xs" />
                             <label className="label">
                             </label>
                         </div>
@@ -170,7 +186,7 @@ const PersonalProfile = () => {
                             <label className="label">
                                 <span className="label-text">Phone Number </span>
                             </label>
-                            <input defaultValue={PersonalProfilesData?.phoneNumber} type="number" name='number' placeholder="ex. 790 340 8392" className="input input-bordered w-full max-w-xs" />
+                            <input defaultValue={ShowedProfile?.phoneNumber} type="number" name='number' placeholder="ex. 790 340 8392" className="input input-bordered w-full max-w-xs" />
                             <label className="label">
                             </label>
                         </div>
@@ -178,7 +194,7 @@ const PersonalProfile = () => {
                             <label className="label">
                                 <span className="label-text">Email </span>
                             </label>
-                            <input type="email" defaultValue={user?.email} name='email' placeholder="ex. abc@gmail.com" className="input input-bordered w-full max-w-xs" />
+                            <input type="email" defaultValue={user?.email || ShowedProfile?.email} name='email' placeholder="ex. abc@gmail.com" className="input input-bordered w-full max-w-xs" />
                             <label className="label">
                             </label>
                         </div>
@@ -186,7 +202,7 @@ const PersonalProfile = () => {
                             <label className="label">
                                 <span className="label-text">Date of Birth </span>
                             </label>
-                            <input onChange={(e) => setDate(e.target.value)} type="date" placeholder="ex. 02/03/2004" className="input input-bordered w-full max-w-xs" />
+                            <input onChange={(e) => setDate(e.target.value)} defaultValue={ShowedProfile?.dob} type="date" placeholder="ex. 02/03/2004" className="input input-bordered w-full max-w-xs" />
                             <label className="label">
                             </label>
                         </div>
@@ -194,15 +210,15 @@ const PersonalProfile = () => {
                             <label className="label">
                                 <span className="label-text">Address </span>
                             </label>
-                            <input defaultValue={PersonalProfilesData?.addressHouse} type="text" name='houseNumber' placeholder="House no/Flat no" className="input input-bordered w-full max-w-xs" />
-                            <input defaultValue={PersonalProfilesData?.addressLocality} type="text" name="houseName" placeholder="HouseLocality" className="input input-bordered w-full max-w-xs mt-2" />
+                            <input defaultValue={ ShowedProfile?.addressHouse} type="text" name='houseNumber' placeholder="House no/Flat no" className="input input-bordered w-full max-w-xs" />
+                            <input defaultValue={ ShowedProfile?.addressLocality} type="text" name="houseName" placeholder="HouseLocality" className="input input-bordered w-full max-w-xs mt-2" />
                             <div className='flex gap-2'>
-                                <input defaultValue={PersonalProfilesData?.addressCountry} type="text" name="country" placeholder="Country" className="input input-bordered w-full max-w-xs mt-2" />
-                                <input defaultValue={PersonalProfilesData?.addressState} type="text" name="state" placeholder="State" className="input input-bordered w-fullState" class="input input-bordered w-full max-w-xs mt-2" />
+                                <input defaultValue={ ShowedProfile?.addressCountry} type="text" name="country" placeholder="Country" className="input input-bordered w-full max-w-xs mt-2" />
+                                <input defaultValue={ ShowedProfile?.addressState} type="text" name="state" placeholder="State" className="input input-bordered w-fullState" class="input input-bordered w-full max-w-xs mt-2" />
                             </div>
                             <div className='flex gap-2'>
-                                <input defaultValue={PersonalProfilesData?.addressCity} type="text" name="city" placeholder="City" className="input input-bordered w-full max-w-xs mt-2" />
-                                <input defaultValue={PersonalProfilesData?.addressPinCode} type="text" name='pincode' placeholder="Pin Code" className="input input-bordered w-full max-w-xs mt-2" />
+                                <input defaultValue={ ShowedProfile?.addressCity} type="text" name="city" placeholder="City" className="input input-bordered w-full max-w-xs mt-2" />
+                                <input defaultValue={ ShowedProfile?.addressPinCode} type="text" name='pincode' placeholder="Pin Code" className="input input-bordered w-full max-w-xs mt-2" />
 
                             </div>
                             <label className="label">
@@ -223,7 +239,7 @@ const PersonalProfile = () => {
                                 <span className="label-text">Height </span>
                             </label>
                             <div className='flex'>
-                                <input defaultValue={Number(PersonalProfilesData?.height.split(" ")[0])} name="height" type="number" placeholder="Height" className="input input-bordered w-44 max-w-xs" />
+                                <input defaultValue={ShowedProfile?.height?.split(" ")[0]} name="height" type="number" placeholder="Height" className="input input-bordered w-44 max-w-xs" />
                                 <select name="heightUnit" className="select select-bordered">
                                     <option value="Cms">cms</option>
                                     <option value="Feet">Feets</option>
@@ -236,7 +252,7 @@ const PersonalProfile = () => {
                                 <span className="label-text">Weight </span>
                             </label>
                             <div className="flex">
-                                <input defaultValue={Number(PersonalProfilesData?.weight.split(" ")[0])} type="number" placeholder="Weight" name="weight" className="input input-bordered w-44 max-w-xs" />
+                                <input defaultValue={ShowedProfile?.weight?.split(" ")[0]} type="number" placeholder="Weight" name="weight" className="input input-bordered w-44 max-w-xs" />
                                 <select name="weightUnit" className="select select-bordered">
                                     <option value="kgs">kgs</option>
                                     <option value="Ibs">Ibs</option>
@@ -247,11 +263,11 @@ const PersonalProfile = () => {
                             <label className="label">
                                 <span className="label-text">Blood Group</span>
                             </label>
-                            <select name='bloodGroup' className="select select-bordered">
-                            <option >Select</option>
+                            <select  name='bloodGroup' className="select select-bordered">
+                                <option >Select</option>
 
                                 {
-                                    BloodGroups.map((data) => <option value={data}>{data}</option>)
+                                    BloodGroups.map((data) => <option selected={data==ShowedProfile?.bloodGroup?true:false} value={data}>{data}</option>)
                                 }
                             </select>
 
