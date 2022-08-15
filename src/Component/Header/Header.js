@@ -13,23 +13,32 @@ import DefaultUser from '../../assets/wesafeassets/image/defaultimage.jpg'
 import { isAdmin } from '@firebase/util';
 import swal from 'sweetalert';
 
-const Header = ({ setSwitcheduser }) => {
+const Header = ({ setSwitcheduser}) => {
     const [user, loading, error] = useAuthState(auth)
     const [users, setUsers] = useState([])
-    const [Checked, setChecked] = useState(true)
     const [Start, setStart] = useState(false)
     const [docId, setDocId] = useState([])
+    const[Activeusers, setActiveusers] = useState({})
     const [isOnlice, setIsOnlice] = useState('')
+    const [Checked, setChecked] = useState(true)
     const navigate = useNavigate()
     const forceUpdate = React.useReducer(bool => !bool)[1];
 
     const getUser = async () => {
         try {
             const querySnapshot = await getDocs(collection(db, `Users/${user?.uid}/ChildList`));
+            
             let AllUsers = []
             let allDocId = []
             querySnapshot.forEach(async (docs) => {
                 allDocId.push(docs.id)
+                if(docs.data().ActiveStatus){
+                    const querySnapshot = await getDoc(doc(db, `Users/${user?.uid}/ChildList/${docs.id}/data`, "personal_information"));
+                    const data = (querySnapshot.data())
+                    setActiveusers(data)
+                    forceUpdate()
+
+                }
                 const querySnapshot = await getDoc(doc(db, `Users/${user?.uid}/ChildList/${docs.id}/data`, "personal_information"));
                 const data = (querySnapshot.data())
                 AllUsers.push(data)
@@ -77,6 +86,10 @@ const Header = ({ setSwitcheduser }) => {
     }
     const SwitchUser = async (docid) => {
         setSwitcheduser(docid)
+        const querySnapshot1 = await getDoc(doc(db, `Users/${user?.uid}/ChildList/${docid}/data`, "personal_information"));
+        const data = querySnapshot1.data()
+        setActiveusers(data)
+
         localStorage.setItem("activeUser", JSON.stringify(docid))
         forceUpdate()
         setDoc(doc(db, `Users/${user?.uid}/ChildList/${docid}`), {
@@ -102,7 +115,7 @@ const Header = ({ setSwitcheduser }) => {
         setIsOnlice(filterActiveStatus[0]?.id)
 
     }
-    console.log(users)
+    console.log(Activeusers)
     const activeUser = JSON.parse(localStorage.getItem("activeUser"))
     return (
         <div className="navbar bg-primary">
@@ -114,7 +127,7 @@ const Header = ({ setSwitcheduser }) => {
                 <div className="dropdown dropdown-end">
                     <label for="my-modal-6" className="btn modal-button btn-ghost btn-circle avatar">
                         <div className="w-10 rounded-full" onClick={() => setStart(true)}>
-                            <img src={user?.photoURL} alt="" />
+                            <img src={Activeusers?.profilePicUrl ||user?.photoURL} alt="" />
                         </div>
                     </label>
                 </div>

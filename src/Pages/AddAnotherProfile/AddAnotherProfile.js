@@ -12,7 +12,7 @@ const AddAnotherProfile = ({setSwitcheduser}) => {
     const [user, loading, error] = useAuthState(auth)
     const [Date, setDate] = useState("")
     const [Gender, setGender] = useState("")
-    const [File, setFile] = useState("")
+    const [File, setFile] = useState("https://firebasestorage.googleapis.com/v0/b/wesafe-40d85.appspot.com/o/personal%20profile%2Fdefaultimage.jpg?alt=media&token=e52a1a43-0dad-49ea-b2b7-6d64576fb48a")
     const [FileUploading, setFileUploading] = useState(false)
     const navigate = useNavigate()
     const Child = generateUniqueId({
@@ -46,7 +46,7 @@ const AddAnotherProfile = ({setSwitcheduser}) => {
         bloodGroup: "",
         phoneNumber: "",
         info_type: "",
-        profilePicUrl: `${DefaultUser}`,
+        profilePicUrl:" https://firebasestorage.googleapis.com/v0/b/wesafe-40d85.appspot.com/o/personal%20profile%2Fdefaultimage.jpg?alt=media&token=e52a1a43-0dad-49ea-b2b7-6d64576fb48a",
         Child: Child
     })
 
