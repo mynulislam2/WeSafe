@@ -11,6 +11,7 @@ const PersonalProfile = () => {
     const [Date, setDate] = useState("")
     const [Gender, setGender] = useState("")
     const [File, setFile] = useState("")
+    const [FileUploading, setFileUploading] = useState(false)
     const navigate = useNavigate()
     const forceUpdate = React.useReducer(bool => !bool)[1];
 
@@ -59,6 +60,7 @@ const PersonalProfile = () => {
                             break;
                         case 'running':
                             console.log('Upload is running');
+                            setFileUploading(true)
                             break;
                     }
                 },
@@ -68,9 +70,10 @@ const PersonalProfile = () => {
                 () => {
 
                     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                        console.log(downloadURL)
                         setFile(downloadURL);
                         localStorage.setItem("PhotoUrl", JSON.stringify(downloadURL));
-
+                        setFileUploading(false)
                     });
                 }
             );
@@ -109,7 +112,7 @@ const PersonalProfile = () => {
             bloodGroup,
             phoneNumber,
             info_type: "personal_profile",
-            profilePicUrl: File || user.photoURL
+            profilePicUrl:JSON.parse(localStorage.getItem("PhotoUrl"))|| user.photoURL
         })
         // await setDoc(doc(db, `Users/${user?.uid}/ChildList`,"child2"), {
         //     ActiveStatus: true,
@@ -158,8 +161,8 @@ const PersonalProfile = () => {
                     <div className="flex justify-center mt-10">
                         <div className="relative">
                             <div className="avatar ">
-                                <div className="w-24 rounded-full">
-                                    <img src={PhotoUrl ? PhotoUrl : user?.photoURL} alt="" />
+                                <div className={`w-24 rounded-full ${FileUploading&&"animate-pulse"}`}>
+                                    <img src={File||ShowedProfile?.profilePicUrl||user?.photoURL} alt="" />
                                 </div>
                             </div>
                             <div onClick={Profile} className="cursor-pointer flex justify-center absolute top-14 left-14 ">
@@ -241,8 +244,8 @@ const PersonalProfile = () => {
                             <div className='flex'>
                                 <input defaultValue={ShowedProfile?.height?.split(" ")[0]} name="height" type="number" placeholder="Height" className="input input-bordered w-44 max-w-xs" />
                                 <select name="heightUnit" className="select select-bordered">
-                                    <option value="Cms">cms</option>
-                                    <option value="Feet">Feets</option>
+                                    <option selected={ShowedProfile?.height?.split(" ")[1]=="Cms"?true:false} value="Cms">cms</option>
+                                    <option  selected={ShowedProfile?.height?.split(" ")[1]=="Feet"?true:false} value="Feet">Feets</option>
                                 </select>
                             </div>
 
@@ -254,8 +257,8 @@ const PersonalProfile = () => {
                             <div className="flex">
                                 <input defaultValue={ShowedProfile?.weight?.split(" ")[0]} type="number" placeholder="Weight" name="weight" className="input input-bordered w-44 max-w-xs" />
                                 <select name="weightUnit" className="select select-bordered">
-                                    <option value="kgs">kgs</option>
-                                    <option value="Ibs">Ibs</option>
+                                    <option  selected={ShowedProfile?.weight?.split(" ")[1]=="kgs"?true:false} value="kgs">kgs</option>
+                                    <option  selected={ShowedProfile?.weight?.split(" ")[1]=="Ibs"?true:false} value="Ibs">Ibs</option>
                                 </select>
                             </div>
                         </div>

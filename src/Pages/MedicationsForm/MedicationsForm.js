@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import useForm from '../../Hooks/useForm';
 
-const MedicationsForm = () => {
+const MedicationsForm = ({Switcheduser}) => {
     const [state, setState] = useState({})
 
     const handleFormSubmit = (event) => {
@@ -25,7 +25,7 @@ const MedicationsForm = () => {
         `
         setState(Data)
     }
-    useForm(state, "medications")
+    useForm(state, "medications",Switcheduser)
 
     return (
         <>

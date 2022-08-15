@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import useForm from '../../Hooks/useForm';
 
-const MedicalCondiationForm = () => {
+const MedicalCondiationForm = ({Switcheduser}) => {
     const [state, setState] = useState({})
 
     const handleFormSubmit = (event) => {
@@ -21,7 +21,7 @@ const MedicalCondiationForm = () => {
         `
         setState(Data)
     }
-    useForm(state, "mediccond")
+    useForm(state, "mediccond",Switcheduser)
 
 
     return (

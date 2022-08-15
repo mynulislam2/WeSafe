@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import safe from '../../assets/safe.png'
+import safe from '../../assets/safe.png';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '../../firebase.init';
 import { Link, useNavigate } from "react-router-dom";
@@ -11,15 +11,18 @@ import '../Header/Header.css'
 import { collection, doc, getDoc, setDoc, getDocs, deleteDoc } from "firebase/firestore";
 import DefaultUser from '../../assets/wesafeassets/image/defaultimage.jpg'
 import { isAdmin } from '@firebase/util';
+import swal from 'sweetalert';
 
-const Header = () => {
+const Header = ({ setSwitcheduser }) => {
     const [user, loading, error] = useAuthState(auth)
     const [users, setUsers] = useState([])
     const [Checked, setChecked] = useState(true)
     const [Start, setStart] = useState(false)
     const [docId, setDocId] = useState([])
     const [isOnlice, setIsOnlice] = useState('')
-    const navigate=useNavigate()
+    const navigate = useNavigate()
+    const forceUpdate = React.useReducer(bool => !bool)[1];
+
     const getUser = async () => {
         try {
             const querySnapshot = await getDocs(collection(db, `Users/${user?.uid}/ChildList`));
@@ -52,17 +55,30 @@ const Header = () => {
         </div>
     }
     const deleteUser = (docid, name) => {
-        const DeletedocRef = doc(db, `Users/${user?.uid}/ChildList/${docid}`);
-        deleteDoc(DeletedocRef)
-            .then(() => {
-                const newData = users.filter(user => user.name !== name);
-                setUsers(newData)
+        swal("Are you sure To Delete?", {
+            buttons: ["Cancel", true],
+
+        })
+            .then((res) => {
+                if (res === true) {
+                    const DeletedocRef = doc(db, `Users/${user?.uid}/ChildList/${docid}`);
+                    deleteDoc(DeletedocRef)
+                        .then(() => {
+                            const newData = users.filter(user => user.name !== name);
+                            setUsers(newData)
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        })
+                }
             })
-            .catch(error => {
-                console.log(error);
-            })
+
+
     }
     const SwitchUser = async (docid) => {
+        setSwitcheduser(docid)
+        localStorage.setItem("activeUser", JSON.stringify(docid))
+        forceUpdate()
         setDoc(doc(db, `Users/${user?.uid}/ChildList/${docid}`), {
             ActiveStatus: true,
             uid: user?.uid
@@ -82,14 +98,15 @@ const Header = () => {
             const ActiveStatus = { id: docs.id, data: docs.data() }
             AllActiveInfo.push(ActiveStatus)
         })
-        const filterActiveStatus =AllActiveInfo.filter(activeStatus => activeStatus.data.ActiveStatus === true);
+        const filterActiveStatus = AllActiveInfo.filter(activeStatus => activeStatus.data.ActiveStatus === true);
         setIsOnlice(filterActiveStatus[0]?.id)
 
     }
-
+    console.log(users)
+    const activeUser = JSON.parse(localStorage.getItem("activeUser"))
     return (
         <div className="navbar bg-primary">
-            <div className="flex-1" onClick={()=>navigate("/")}>
+            <div className="flex-1" onClick={() => navigate("/")}>
                 <img className='w-12' src={safe} alt="" />
                 <a className="btn btn-ghost normal-case text-xl text-white">WeSafe</a>
             </div>
@@ -126,10 +143,10 @@ const Header = () => {
 
                             {users.map((item, i) => {
                                 return <div class="avatar flex items-center  mt-3 relative">
-                                    {docId[i]==isOnlice?<span style={{ height: "8px", paddingRight: "0rem", }} class="indicator-item badge bg-green-500 border-none"></span>:<span style={{ height: "8px", paddingRight: "0rem", }} class="indicator-item badge bg-white border-none"></span>}
+                                    {docId[i] == activeUser ? <span style={{ height: "8px", paddingRight: "0rem", }} class="indicator-item badge bg-green-500 border-none"></span> : <span style={{ height: "8px", paddingRight: "0rem", }} class="indicator-item badge bg-white border-none"></span>}
 
                                     <div class="w-10 rounded-full ml-3">
-                                        <img src={item?.profilePicUrl} />
+                                        <img src={item?.profilePicUrl || DefaultUser} />
                                     </div>
                                     <p className="ml-3 cursor-pointer" onClick={() => SwitchUser(docId[i])}>{item?.name}</p>
 

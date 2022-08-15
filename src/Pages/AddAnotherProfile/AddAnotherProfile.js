@@ -4,15 +4,16 @@ import { FaPen } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { auth, storage, db } from '../../firebase.init';
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc} from "firebase/firestore";
 import DefaultUser from '../../assets/wesafeassets/image/defaultimage.jpg'
 import Header from '../../Component/Header/Header';
-const AddAnotherProfile = () => {
+const AddAnotherProfile = ({setSwitcheduser}) => {
     const generateUniqueId = require('generate-unique-id');
     const [user, loading, error] = useAuthState(auth)
     const [Date, setDate] = useState("")
     const [Gender, setGender] = useState("")
     const [File, setFile] = useState("")
+    const [FileUploading, setFileUploading] = useState(false)
     const navigate = useNavigate()
     const Child = generateUniqueId({
         length: 20,
@@ -28,6 +29,7 @@ const AddAnotherProfile = () => {
         "O +ve",
         "O -ve",
     ]
+
     const [PersonalProfiles, setPersonalProfiles] = useState({
         name: "",
         email: "",
@@ -63,6 +65,8 @@ const AddAnotherProfile = () => {
                             break;
                         case 'running':
                             console.log('Upload is running');
+                            setFileUploading(true)
+
                             break;
                     }
                 },
@@ -73,8 +77,8 @@ const AddAnotherProfile = () => {
 
                     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                         setFile(downloadURL);
-                        localStorage.setItem("PhotoUrl", JSON.stringify(downloadURL));
-
+                        localStorage.setItem("PhotoUrlAdd", JSON.stringify(downloadURL));
+                        setFileUploading(false)
                     });
                 }
             );
@@ -126,14 +130,18 @@ const AddAnotherProfile = () => {
             ActiveStatus: true,
             uid: user?.uid
         });
+        setSwitcheduser('child' + Child)
+        localStorage.setItem("activeUser", JSON.stringify('child' + Child))
+
         localStorage.setItem("PersonalProfiles", JSON.stringify(PersonalProfiles));
     }
     let PersonalProfilesData = JSON.parse(localStorage.getItem("PersonalProfiles"))
-    let PhotoUrl = JSON.parse(localStorage.getItem("PhotoUrl"))
+    let PhotoUrl = JSON.parse(localStorage.getItem("PhotoUrlAdd"))
     if (PersonalProfiles.info_type) {
         navigate("/")
 
     }
+
     return (
         <div className="">
             <Header></Header>
@@ -142,8 +150,8 @@ const AddAnotherProfile = () => {
                     <div className="flex justify-center mt-10">
                         <div className="relative">
                             <div className="avatar ">
-                                <div className="w-24 rounded-full">
-                                    <img src={PhotoUrl ? PhotoUrl : DefaultUser} alt="" />
+                                <div className={`w-24 rounded-full ${FileUploading&&"animate-pulse"}`}>
+                                    <img src={File||DefaultUser} alt="" />
                                 </div>
                             </div>
                             <div onClick={Profile} className="cursor-pointer flex justify-center absolute top-14 left-14 ">
@@ -160,9 +168,9 @@ const AddAnotherProfile = () => {
                     >
                         <div className="form-control w-full max-w-xs">
                             <label className="label">
-                                <span className="label-text">name <span className=' text-red-600'>*</span></span>
+                                <span className="label-text">Name <span className=' text-red-600'>*</span></span>
                             </label>
-                            <input type="text" required name="name" placeholder="Mynul" className="input input-bordered w-full max-w-xs" />
+                            <input type="text" required name="name" placeholder="ex. Mynul" className="input input-bordered w-full max-w-xs" />
                             <label className="label">
                             </label>
                         </div>
@@ -170,7 +178,7 @@ const AddAnotherProfile = () => {
                             <label className="label">
                                 <span className="label-text">Phone Number </span>
                             </label>
-                            <input defaultValue={PersonalProfilesData?.phoneNumber} type="number" name='number' placeholder="ex. 790 340 8392" className="input input-bordered w-full max-w-xs" />
+                            <input type="number" name='number' placeholder="ex. 790 340 8392" className="input input-bordered w-full max-w-xs" />
 
                         </div>
                         <div className="form-control w-full max-w-xs">
@@ -200,15 +208,15 @@ const AddAnotherProfile = () => {
                             <label className="label">
                                 <span className="label-text">Address </span>
                             </label>
-                            <input defaultValue={PersonalProfilesData?.addressHouse} type="text" name='houseNumber' placeholder="House no/Flat no" className="input input-bordered w-full max-w-xs" />
-                            <input defaultValue={PersonalProfilesData?.addressLocality} type="text" name="houseName" placeholder="HouseLocality" className="input input-bordered w-full max-w-xs mt-2" />
+                            <input type="text" name='houseNumber' placeholder="House no/Flat no" className="input input-bordered w-full max-w-xs" />
+                            <input type="text" name="houseName" placeholder="HouseLocality" className="input input-bordered w-full max-w-xs mt-2" />
                             <div className='flex gap-2'>
-                                <input defaultValue={PersonalProfilesData?.addressCountry} type="text" name="country" placeholder="Country" className="input input-bordered w-full max-w-xs mt-2" />
-                                <input defaultValue={PersonalProfilesData?.addressState} type="text" name="state" placeholder="State" className="input input-bordered w-fullState" class="input input-bordered w-full max-w-xs mt-2" />
+                                <input type="text" name="country" placeholder="Country" className="input input-bordered w-full max-w-xs mt-2" />
+                                <input type="text" name="state" placeholder="State" className="input input-bordered w-fullState" class="input input-bordered w-full max-w-xs mt-2" />
                             </div>
                             <div className='flex gap-2'>
-                                <input defaultValue={PersonalProfilesData?.addressCity} type="text" name="city" placeholder="City" className="input input-bordered w-full max-w-xs mt-2" />
-                                <input defaultValue={PersonalProfilesData?.addressPinCode} type="text" name='pincode' placeholder="Pin Code" className="input input-bordered w-full max-w-xs mt-2" />
+                                <input type="text" name="city" placeholder="City" className="input input-bordered w-full max-w-xs mt-2" />
+                                <input type="text" name='pincode' placeholder="Pin Code" className="input input-bordered w-full max-w-xs mt-2" />
 
                             </div>
                             <label className="label">
@@ -219,9 +227,9 @@ const AddAnotherProfile = () => {
                                 <span className="label-text">Gender </span>
                             </label>
                             <div className='flex gap-x-2'>
-                                <a onClick={() => setGender("Female")} className={`btn ${Gender == "Female" ? "bg-gray-900 text-white" : "text-secondary"}  bg-base-100  hover:text-white border-primary`}>Female</a>
-                                <a onClick={() => setGender("Male")} className={`btn ${Gender == "Male" ? "bg-gray-900 text-white" : "text-secondary"}  bg-base-100  hover:text-white border-primary`}>Male</a>
-                                <a onClick={() => setGender("Others")} className={`btn ${Gender == "Others" ? "bg-gray-900 text-white" : "text-secondary"}  bg-base-100  hover:text-white border-primary`}>Others</a>
+                                <a onClick={() => setGender("Female")} className={`btn ${Gender == "Female" ? "bg-gray-900 text-white" : "text-secondary"} bg-white  hover:text-white border-primary`}>Female</a>
+                                <a onClick={() => setGender("Male")} className={`btn ${Gender == "Male" ? "bg-gray-900 text-white" : "text-secondary"}   bg-white hover:text-white border-primary`}>Male</a>
+                                <a onClick={() => setGender("Others")} className={`btn ${Gender == "Others" ? "bg-gray-900 text-white" : "text-secondary"} bg-white   hover:text-white border-primary`}>Others</a>
                             </div>
                         </div>
                         <div className="form-control  w-full max-w-xs">
@@ -229,7 +237,7 @@ const AddAnotherProfile = () => {
                                 <span className="label-text">Height </span>
                             </label>
                             <div className='flex'>
-                                <input defaultValue={Number(PersonalProfilesData?.height.split(" ")[0])} name="height" type="number" placeholder="Height" className="input input-bordered w-44 max-w-xs" />
+                                <input name="height" type="number" placeholder="Height" className="input input-bordered w-44 max-w-xs" />
                                 <select name="heightUnit" className="select select-bordered">
                                     <option value="Cms">cms</option>
                                     <option value="Feet">Feets</option>
@@ -242,7 +250,7 @@ const AddAnotherProfile = () => {
                                 <span className="label-text">Weight </span>
                             </label>
                             <div className="flex">
-                                <input defaultValue={Number(PersonalProfilesData?.weight.split(" ")[0])} type="number" placeholder="Weight" name="weight" className="input input-bordered w-44 max-w-xs" />
+                                <input type="number" placeholder="Weight" name="weight" className="input input-bordered w-44 max-w-xs" />
                                 <select name="weightUnit" className="select select-bordered">
                                     <option value="kgs">kgs</option>
                                     <option value="Ibs">Ibs</option>

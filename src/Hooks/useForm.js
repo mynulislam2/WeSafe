@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../firebase.init";
 import { useNavigate } from "react-router-dom";
-const useForm = (data, path) => {
+const useForm = (data, path,child) => {
     const generateUniqueId = require('generate-unique-id');
     const [user, loading, error] = useAuthState(auth)
     const navigate = useNavigate()
@@ -15,7 +15,7 @@ const useForm = (data, path) => {
                 useLetters: true
               });
             const docUrl = id
-            const CollectionRef = doc(db, `Users/${user?.uid}/ChildList/child1/data/${path}/${path}`, docUrl);
+            const CollectionRef = doc(db, `Users/${user?.uid}/ChildList/${child}/data/${path}/${path}`, docUrl);
 
             setDoc(CollectionRef, {
                 ...result.data,

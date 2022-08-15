@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import useForm from '../../Hooks/useForm';
 
-const EmergencyContactForm = () => {
+const EmergencyContactForm = ({Switcheduser}) => {
     const [state, setState] = useState({})
     const handleFormSubmit = (event) => {
         event.preventDefault();
@@ -26,7 +26,7 @@ const EmergencyContactForm = () => {
         `
         setState(Data)
     }
-    useForm(state, "emergencycont")
+    useForm(state, "emergencycont",Switcheduser)
 
     return (
         <>

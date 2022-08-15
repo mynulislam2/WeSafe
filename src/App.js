@@ -24,6 +24,7 @@ import { Fade, Slide } from "react-reveal";
 
 function App() {
   const [spinner, setSpinner] = useState(true);
+  const [Switcheduser, setSwitcheduser] = useState("")
   useEffect(() => {
     setTimeout(() => setSpinner(false), 1500)
   }, []);
@@ -39,23 +40,23 @@ function App() {
         <Routes>
           <Route path="/" element={
             <RequireAuth>
-              <Mainpage></Mainpage>
+              <Mainpage setSwitcheduser={setSwitcheduser}></Mainpage>
             </RequireAuth>
 
           } />
           <Route path="/auth" element={<Authpage></Authpage>} />
           <Route path="/BuildProfile" element={<BuildProfile></BuildProfile>} />
           <Route path="/personalProfile" element={<PersonalProfile></PersonalProfile>} />
-          <Route path="/addAnotherProfile" element={<AddAnotherProfile></AddAnotherProfile>} />
-          <Route path="/mainpage/:id" element={<Features></Features>} />
-          <Route path="/emergencycont/details" element={<EmergencyContactForm></EmergencyContactForm>} />
-          <Route path="/mediccond/details" element={<MedicalCondiationForm></MedicalCondiationForm>} />
-          <Route path="/medications/details" element={<MedicationsForm></MedicationsForm>} />
-          <Route path="/allergies/details" element={<AllergyForm></AllergyForm>} />
-          <Route path="/vaccinations/details" element={<VaccinationForm></VaccinationForm>} />
-          <Route path="/procedures/details" element={<Procedures></Procedures>} />
-          <Route path="/insurance/details" element={<InsuranceForm></InsuranceForm>} />
-          <Route path="/:id" element={<TakenFeatures></TakenFeatures>} />
+          <Route path="/addAnotherProfile" element={<AddAnotherProfile setSwitcheduser={setSwitcheduser}></AddAnotherProfile>} />
+          <Route path="/mainpage/:id" element={<Features ></Features>} />
+          <Route path="/emergencycont/details" element={<EmergencyContactForm Switcheduser={Switcheduser}></EmergencyContactForm>} />
+          <Route path="/mediccond/details" element={<MedicalCondiationForm Switcheduser={Switcheduser}></MedicalCondiationForm>} />
+          <Route path="/medications/details" element={<MedicationsForm Switcheduser={Switcheduser}></MedicationsForm>} />
+          <Route path="/allergies/details" element={<AllergyForm Switcheduser={Switcheduser}></AllergyForm>} />
+          <Route path="/vaccinations/details" element={<VaccinationForm Switcheduser={Switcheduser}></VaccinationForm>} />
+          <Route path="/procedures/details" element={<Procedures Switcheduser={Switcheduser}></Procedures>} />
+          <Route path="/insurance/details" element={<InsuranceForm Switcheduser={Switcheduser}> </InsuranceForm>} />
+          <Route path="/:id" element={<TakenFeatures Switcheduser={Switcheduser}></TakenFeatures>} />
 
         </Routes>
       </BrowserRouter>
