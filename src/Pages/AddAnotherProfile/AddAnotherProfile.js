@@ -117,7 +117,7 @@ const AddAnotherProfile = ({setSwitcheduser}) => {
             bloodGroup,
             phoneNumber,
             info_type: "personal_profile",
-            profilePicUrl: File
+            profilePicUrl: File||user?.photoURL
         })
 
     }

@@ -6,7 +6,7 @@ import { auth, storage, db } from '../../firebase.init';
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { doc, setDoc, collection, getDocs } from "firebase/firestore";
 import Header from '../../Component/Header/Header';
-const PersonalProfile = () => {
+const PersonalProfile = ({setSwitcheduser,Activeusers}) => {
     const [user, loading, error] = useAuthState(auth)
     const [Date, setDate] = useState("")
     const [Gender, setGender] = useState("")
@@ -14,7 +14,7 @@ const PersonalProfile = () => {
     const [FileUploading, setFileUploading] = useState(false)
     const navigate = useNavigate()
     const forceUpdate = React.useReducer(bool => !bool)[1];
-
+const ActiveUser=JSON.parse( localStorage.getItem('activeUser'))
     const BloodGroups = [
         "A +ve",
         "A -ve",
@@ -112,12 +112,14 @@ const PersonalProfile = () => {
             bloodGroup,
             phoneNumber,
             info_type: "personal_profile",
-            profilePicUrl:JSON.parse(localStorage.getItem("PhotoUrl"))|| user.photoURL
+            profilePicUrl:File ||user.photoURL
         })
         // await setDoc(doc(db, `Users/${user?.uid}/ChildList`,"child2"), {
         //     ActiveStatus: true,
         //     uid: user.uid
         // });
+        setSwitcheduser(ActiveUser)
+        localStorage.setItem("activeUser", JSON.stringify('child1'))
     }
 
     if (PersonalProfiles.info_type) {
@@ -141,7 +143,7 @@ const PersonalProfile = () => {
     }
     useEffect(() => {
         const getPersonalInfo = async () => {
-            const querySnapshot = await getDocs(collection(db, `Users/${user?.uid}/ChildList/child1/data`));
+            const querySnapshot = await getDocs(collection(db, `Users/${user?.uid}/ChildList/${ActiveUser}/data`));
             querySnapshot.forEach(async (docs) => {
                 setShowedProfile(docs.data())
                 forceUpdate();
@@ -149,7 +151,7 @@ const PersonalProfile = () => {
         }
         getPersonalInfo()
         setGender(ShowedProfile?.gender)
-    console.log(ShowedProfile)
+
 }, [ShowedProfile?.gender]);
 
     return (

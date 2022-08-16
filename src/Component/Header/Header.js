@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import safe from '../../assets/safe.png';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '../../firebase.init';
@@ -13,32 +13,26 @@ import DefaultUser from '../../assets/wesafeassets/image/defaultimage.jpg'
 import { isAdmin } from '@firebase/util';
 import swal from 'sweetalert';
 
-const Header = ({ setSwitcheduser}) => {
+const Header = ({ setSwitcheduser,Activeusers,setActiveusers }) => {
     const [user, loading, error] = useAuthState(auth)
     const [users, setUsers] = useState([])
     const [Start, setStart] = useState(false)
     const [docId, setDocId] = useState([])
-    const[Activeusers, setActiveusers] = useState({})
+    const [ActiveusersProfile, setActiveusersProfile] = useState("")
     const [isOnlice, setIsOnlice] = useState('')
     const [Checked, setChecked] = useState(true)
+    const [LoadUser,setLoadUsers]=useState(false)
     const navigate = useNavigate()
     const forceUpdate = React.useReducer(bool => !bool)[1];
 
-    const getUser = async () => {
-        try {
+    useEffect(() => {
+        const getUser = async () => {
             const querySnapshot = await getDocs(collection(db, `Users/${user?.uid}/ChildList`));
-            
             let AllUsers = []
             let allDocId = []
             querySnapshot.forEach(async (docs) => {
                 allDocId.push(docs.id)
-                if(docs.data().ActiveStatus){
-                    const querySnapshot = await getDoc(doc(db, `Users/${user?.uid}/ChildList/${docs.id}/data`, "personal_information"));
-                    const data = (querySnapshot.data())
-                    setActiveusers(data)
-                    forceUpdate()
 
-                }
                 const querySnapshot = await getDoc(doc(db, `Users/${user?.uid}/ChildList/${docs.id}/data`, "personal_information"));
                 const data = (querySnapshot.data())
                 AllUsers.push(data)
@@ -46,16 +40,15 @@ const Header = ({ setSwitcheduser}) => {
             setDocId(allDocId)
             setUsers(AllUsers)
             setChecked(false)
-            localStorage.setItem('allUsers', JSON.stringify(users));
+forceUpdate()
+
 
         }
-        catch (err) {
-            console.error(err);
-        }
-
-    }
-    if (Checked) {
         getUser()
+    }, [])      
+          localStorage.setItem("allUsers", JSON.stringify(users))
+
+    if (Checked) {
         return <div role="status" className=' h-screen flex justify-center items-center'>
             <svg class="inline mr-2 w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-primary" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
@@ -64,7 +57,7 @@ const Header = ({ setSwitcheduser}) => {
         </div>
     }
     const deleteUser = (docid, name) => {
-        swal("Are you sure To Delete?", {
+        swal("Do you wish to delete this? Please confirm", {
             buttons: ["Cancel", true],
 
         })
@@ -89,7 +82,7 @@ const Header = ({ setSwitcheduser}) => {
         const querySnapshot1 = await getDoc(doc(db, `Users/${user?.uid}/ChildList/${docid}/data`, "personal_information"));
         const data = querySnapshot1.data()
         setActiveusers(data)
-
+        setActiveusersProfile(data.profilePicUrl)
         localStorage.setItem("activeUser", JSON.stringify(docid))
         forceUpdate()
         setDoc(doc(db, `Users/${user?.uid}/ChildList/${docid}`), {
@@ -115,8 +108,10 @@ const Header = ({ setSwitcheduser}) => {
         setIsOnlice(filterActiveStatus[0]?.id)
 
     }
-    console.log(Activeusers)
+    console.log(users)
     const activeUser = JSON.parse(localStorage.getItem("activeUser"))
+    const allUsers = JSON.parse(localStorage.getItem("allUsers"))
+console.log(allUsers)
     return (
         <div className="navbar bg-primary">
             <div className="flex-1" onClick={() => navigate("/")}>
@@ -127,7 +122,7 @@ const Header = ({ setSwitcheduser}) => {
                 <div className="dropdown dropdown-end">
                     <label for="my-modal-6" className="btn modal-button btn-ghost btn-circle avatar">
                         <div className="w-10 rounded-full" onClick={() => setStart(true)}>
-                            <img src={Activeusers?.profilePicUrl ||user?.photoURL} alt="" />
+                            <img src={ActiveusersProfile || user?.photoURL} alt="" />
                         </div>
                     </label>
                 </div>
@@ -154,7 +149,7 @@ const Header = ({ setSwitcheduser}) => {
                                 </div>
                             </div> */}
 
-                            {users.map((item, i) => {
+                            {allUsers?.map((item, i) => {
                                 return <div class="avatar flex items-center  mt-3 relative">
                                     {docId[i] == activeUser ? <span style={{ height: "8px", paddingRight: "0rem", }} class="indicator-item badge bg-green-500 border-none"></span> : <span style={{ height: "8px", paddingRight: "0rem", }} class="indicator-item badge bg-white border-none"></span>}
 

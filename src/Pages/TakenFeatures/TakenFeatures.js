@@ -20,7 +20,7 @@ const TakenFeatures = ({ Switcheduser }) => {
     const [dataChecked, setDataChecked] = useState(true)
     const navigate = useNavigate()
     const deleteDocument = (docid) => {
-        swal("Are you sure To Delete?", {
+        swal("Do you wish to delete this? Please confirm", {
             buttons: ["Cancel", true],
 
         })
@@ -100,8 +100,8 @@ const TakenFeatures = ({ Switcheduser }) => {
 
                     </p>
                     <Link to={"details"}>
-                        <div style={{ width: "60px", height: "60px", marginTop: "-35px" }} className='w-5 cursor-pointer flex justify-center items-center rounded-full bg-primary  absolute right-6'>
-                            <p className='text-white font-bold text-3xl'>+</p>
+                        <div style={{ width: "40px", height: "40px", marginTop: "-20px", border: "1px solid white"}} className='w-5 cursor-pointer flex justify-center items-center rounded-full bg-primary  absolute right-6  border-sky-100 border-1'>
+                            <p className='text-white font-bold text-3xl  '>+</p>
                         </div>
 
                     </Link>

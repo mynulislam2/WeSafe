@@ -25,6 +25,7 @@ import { Fade, Slide } from "react-reveal";
 function App() {
   const [spinner, setSpinner] = useState(true);
   const [Switcheduser, setSwitcheduser] = useState("")
+  const [Activeusers, setActiveusers] = useState({})
 
   useEffect(() => {
     setTimeout(() => setSpinner(false), 1500)
@@ -41,13 +42,13 @@ function App() {
         <Routes>
           <Route path="/" element={
             <RequireAuth>
-              <Mainpage setSwitcheduser={setSwitcheduser} ></Mainpage>
+              <Mainpage setSwitcheduser={setSwitcheduser} Activeusers={Activeusers} setActiveusers={setActiveusers}></Mainpage>
             </RequireAuth>
 
           } />
           <Route path="/auth" element={<Authpage></Authpage>} />
           <Route path="/BuildProfile" element={<BuildProfile></BuildProfile>} />
-          <Route path="/personalProfile" element={<PersonalProfile></PersonalProfile>} />
+          <Route path="/personalProfile" element={<PersonalProfile setSwitcheduser={setSwitcheduser} Activeusers={Activeusers}></PersonalProfile>} />
           <Route path="/addAnotherProfile" element={<AddAnotherProfile setSwitcheduser={setSwitcheduser}></AddAnotherProfile>} />
           <Route path="/mainpage/:id" element={<Features ></Features>} />
           <Route path="/emergencycont/details" element={<EmergencyContactForm Switcheduser={Switcheduser}></EmergencyContactForm>} />
