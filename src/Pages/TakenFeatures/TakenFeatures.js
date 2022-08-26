@@ -101,7 +101,7 @@ const TakenFeatures = ({ Switcheduser }) => {
                     </p>
                     <Link to={"details"}>
                         <div style={{ width: "40px", height: "40px", marginTop: "-20px", border: "1px solid white"}} className='w-5 cursor-pointer flex justify-center items-center rounded-full bg-primary  absolute right-6  border-sky-100 border-1'>
-                            <p className='text-white font-bold text-3xl  '>+</p>
+                            <p className='text-white font-bold text-3xl  'style={{marginTop:"-6px"}}>+</p>
                         </div>
 
                     </Link>

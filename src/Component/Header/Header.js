@@ -8,12 +8,12 @@ import { FaUserPlus, FaTrash } from "react-icons/fa";
 import { MdOutlineContactSupport, MdOutlineShare } from "react-icons/md";
 import { HiOutlineChatAlt2, HiOutlineLogout } from "react-icons/hi";
 import '../Header/Header.css'
-import { collection, doc, getDoc, setDoc, getDocs, deleteDoc } from "firebase/firestore";
+import { collection, where, query, doc, getDoc, setDoc, getDocs, deleteDoc } from "firebase/firestore";
 import DefaultUser from '../../assets/wesafeassets/image/defaultimage.jpg'
 import { isAdmin } from '@firebase/util';
 import swal from 'sweetalert';
 
-const Header = ({ setSwitcheduser,Activeusers,setActiveusers }) => {
+const Header = ({ setSwitcheduser, Activeusers, setActiveusers }) => {
     const [user, loading, error] = useAuthState(auth)
     const [users, setUsers] = useState([])
     const [Start, setStart] = useState(false)
@@ -21,7 +21,7 @@ const Header = ({ setSwitcheduser,Activeusers,setActiveusers }) => {
     const [ActiveusersProfile, setActiveusersProfile] = useState("")
     const [isOnlice, setIsOnlice] = useState('')
     const [Checked, setChecked] = useState(true)
-    const [LoadUser,setLoadUsers]=useState(false)
+    const [LoadUser, setLoadUsers] = useState(false)
     const navigate = useNavigate()
     const forceUpdate = React.useReducer(bool => !bool)[1];
 
@@ -36,17 +36,30 @@ const Header = ({ setSwitcheduser,Activeusers,setActiveusers }) => {
                 const querySnapshot = await getDoc(doc(db, `Users/${user?.uid}/ChildList/${docs.id}/data`, "personal_information"));
                 const data = (querySnapshot.data())
                 AllUsers.push(data)
+
+                const q = query(collection(db, `Users/${user?.uid}/ChildList`), where("ActiveStatus", "==", true));
+                const querySnapshot1 = await getDocs(q);
+                querySnapshot1.forEach((doc) => {
+                    setSwitcheduser(doc.id)
+
+
+                    const data = querySnapshot1.data()
+                    setActiveusers(data)
+                    setActiveusersProfile(data.profilePicUrl)
+                    localStorage.setItem("activeUser", JSON.stringify(doc.id))
+                });
+
             });
             setDocId(allDocId)
             setUsers(AllUsers)
             setChecked(false)
-forceUpdate()
+            forceUpdate()
 
 
         }
         getUser()
-    }, [])      
-          localStorage.setItem("allUsers", JSON.stringify(users))
+    }, [])
+    localStorage.setItem("allUsers", JSON.stringify(users))
 
     if (Checked) {
         return <div role="status" className=' h-screen flex justify-center items-center'>
@@ -111,7 +124,7 @@ forceUpdate()
     console.log(users)
     const activeUser = JSON.parse(localStorage.getItem("activeUser"))
     const allUsers = JSON.parse(localStorage.getItem("allUsers"))
-console.log(allUsers)
+    console.log(allUsers)
     return (
         <div className="navbar bg-primary">
             <div className="flex-1" onClick={() => navigate("/")}>
