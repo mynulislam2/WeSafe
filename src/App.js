@@ -42,14 +42,14 @@ function App() {
         <Routes>
           <Route path="/" element={
             <RequireAuth>
-              <Mainpage setSwitcheduser={setSwitcheduser} Activeusers={Activeusers} setActiveusers={setActiveusers}></Mainpage>
+              <Mainpage setSwitcheduser={setSwitcheduser}Switcheduser={Switcheduser} Activeusers={Activeusers} setActiveusers={setActiveusers}></Mainpage>
             </RequireAuth>
 
           } />
           <Route path="/auth" element={<Authpage></Authpage>} />
           <Route path="/BuildProfile" element={<BuildProfile></BuildProfile>} />
-          <Route path="/personalProfile" element={<PersonalProfile setSwitcheduser={setSwitcheduser} Activeusers={Activeusers}></PersonalProfile>} />
-          <Route path="/addAnotherProfile" element={<AddAnotherProfile setSwitcheduser={setSwitcheduser}></AddAnotherProfile>} />
+          <Route path="/personalProfile" element={<PersonalProfile setSwitcheduser={setSwitcheduser}Switcheduser={Switcheduser} Activeusers={Activeusers} setActiveusers={setActiveusers}></PersonalProfile>} />
+          <Route path="/addAnotherProfile" element={<AddAnotherProfile setSwitcheduser={setSwitcheduser}Switcheduser={Switcheduser} Activeusers={Activeusers} setActiveusers={setActiveusers}></AddAnotherProfile>} />
           <Route path="/mainpage/:id" element={<Features ></Features>} />
           <Route path="/emergencycont/details" element={<EmergencyContactForm Switcheduser={Switcheduser}></EmergencyContactForm>} />
           <Route path="/mediccond/details" element={<MedicalCondiationForm Switcheduser={Switcheduser}></MedicalCondiationForm>} />

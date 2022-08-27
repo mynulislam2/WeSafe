@@ -9,6 +9,7 @@ import { Link } from "react-router-dom"
 import { MdArrowBack } from "react-icons/md";
 import swal from 'sweetalert';
 import './TakenFeatures.css'
+import plusIcons from "../../assets/wesafeassets/image/plusIcons.png"
 
 const TakenFeatures = ({ Switcheduser }) => {
     const child = Switcheduser
@@ -99,12 +100,7 @@ const TakenFeatures = ({ Switcheduser }) => {
                         {id !== "emergencycont" && id !== "mediccond" && id.charAt(0).toUpperCase() + id.slice(1)}
 
                     </p>
-                    <Link to={"details"}>
-                        <div style={{ width: "40px", height: "40px", marginTop: "-20px", border: "1px solid white"}} className='w-5 cursor-pointer flex justify-center items-center rounded-full bg-primary  absolute right-6  border-sky-100 border-1'>
-                            <p className='text-white font-bold text-3xl  'style={{marginTop:"-6px"}}>+</p>
-                        </div>
-
-                    </Link>
+                    <img width= "28px" onClick={() => navigate("details")} className=' cursor-pointer flex justify-center items-center   absolute right-6 ' src={plusIcons} alt="" />
                 </div>
                 <div className=' relative' style={{ height: "80vh" }}>
 
@@ -200,12 +196,7 @@ const TakenFeatures = ({ Switcheduser }) => {
                         })
                     }
                 </div>
-                <Link to={"details"}>
-                    <div style={{ width: "60px", height: "60px" }} className='w-5 cursor-pointer flex justify-center items-center rounded-full bg-primary absolute right-10 '>
-                        <p className='text-white font-bold text-3xl'>+</p>
-                    </div>
 
-                </Link>
             </>
         );
     }

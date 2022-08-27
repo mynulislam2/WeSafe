@@ -4,7 +4,7 @@ import Header from '../../Component/Header/Header';
 import { Link } from "react-router-dom"
 import { FaProcedures, FaSyringe, FaMedkit, FaAllergies, FaPills, FaAddressCard, FaStethoscope, FaUserCircle } from "react-icons/fa";
 import { Slide } from 'react-reveal';
-const Mainpage = ({setSwitcheduser,setActiveusers,Activeusers}) => {
+const Mainpage = ({setSwitcheduser,Switcheduser,setActiveusers,Activeusers}) => {
     const Features = [
         {
             icon: FaAddressCard,
@@ -53,7 +53,7 @@ const Mainpage = ({setSwitcheduser,setActiveusers,Activeusers}) => {
     return (
        
         <div className='bg-accent'>
-            <Header setSwitcheduser={setSwitcheduser} setActiveusers={setActiveusers} Activeusers={Activeusers}></Header>
+            <Header setSwitcheduser={setSwitcheduser} Switcheduser={Switcheduser} setActiveusers={setActiveusers} Activeusers={Activeusers}></Header>
             <Slide right>
                  <Link to='/personalProfile'>
                 <div className=" bg-white w-11/12 lg:w-1/2 p-3 rounded-xl mx-auto mt-5">

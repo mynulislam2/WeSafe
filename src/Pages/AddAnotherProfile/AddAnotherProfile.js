@@ -7,7 +7,7 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { doc, setDoc} from "firebase/firestore";
 import DefaultUser from '../../assets/wesafeassets/image/defaultimage.jpg'
 import Header from '../../Component/Header/Header';
-const AddAnotherProfile = ({setSwitcheduser}) => {
+const AddAnotherProfile = ({setSwitcheduser,Switcheduser,setActiveusers,Activeusers}) => {
     const generateUniqueId = require('generate-unique-id');
     const [user, loading, error] = useAuthState(auth)
     const [Date, setDate] = useState("")
@@ -123,15 +123,15 @@ const AddAnotherProfile = ({setSwitcheduser}) => {
     }
 
     if (PersonalProfiles.info_type) {
-        setDoc(doc(db, `Users/${user?.uid}/ChildList/${'child' + Child}/data`, "personal_information"), {
+        setDoc(doc(db, `Users/${user?.uid}/ChildList/${'child'+Child}/data`, "personal_information"), {
             ...PersonalProfiles
         });
-        setDoc(doc(db, `Users/${user?.uid}/ChildList/${'child' + Child}`), {
+        setDoc(doc(db, `Users/${user?.uid}/ChildList/${'child'+Child}`), {
             ActiveStatus: true,
             uid: user?.uid
         });
-        setSwitcheduser('child' + Child)
-        localStorage.setItem("activeUser", JSON.stringify('child' + Child))
+        setSwitcheduser('child'+Child)
+        localStorage.setItem("activeUser", JSON.stringify('child'+Child))
 
         localStorage.setItem("PersonalProfiles", JSON.stringify(PersonalProfiles));
     }
@@ -144,7 +144,7 @@ const AddAnotherProfile = ({setSwitcheduser}) => {
 
     return (
         <div className="">
-            <Header></Header>
+            <Header setSwitcheduser={setSwitcheduser} Switcheduser={Switcheduser} setActiveusers={setActiveusers} Activeusers={Activeusers}></Header>
             <div className="flex justify-center">
                 <div className="mb-2">
                     <div className="flex justify-center mt-10">

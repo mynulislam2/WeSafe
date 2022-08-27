@@ -6,7 +6,8 @@ import { auth, storage, db } from '../../firebase.init';
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { doc, setDoc, collection, getDocs } from "firebase/firestore";
 import Header from '../../Component/Header/Header';
-const PersonalProfile = ({setSwitcheduser,Activeusers}) => {
+const PersonalProfile = ({setSwitcheduser,Switcheduser,setActiveusers,Activeusers}) => {
+    const child=Switcheduser||"child1"
     const [user, loading, error] = useAuthState(auth)
     const [Date, setDate] = useState("")
     const [Gender, setGender] = useState("")
@@ -50,7 +51,7 @@ const ActiveUser=JSON.parse( localStorage.getItem('activeUser'))
         input.type = 'file';
         input.onchange = e => {
             var file = e.target.files[0];
-            const imageRef = ref(storage, `Users/${user?.uid}/child1/${file.name}`)
+            const imageRef = ref(storage, `Users/${user?.uid}/${child}/${file.name}`)
             const uploadTask = uploadBytesResumable(imageRef, file)
             uploadTask.on('state_changed',
                 (snapshot) => {
@@ -92,7 +93,7 @@ const ActiveUser=JSON.parse( localStorage.getItem('activeUser'))
         const addressCity = await event.target.city.value
         const addressPinCode = await event.target.pincode.value
         const dob = Date
-        const gender = Gender
+        const gender = Gender||""
         const height = await event.target.height.value + " " + event.target.heightUnit.value
         const weight = await event.target.weight.value + " " + event.target.weightUnit.value
         const bloodGroup = await event.target.bloodGroup.value
@@ -119,14 +120,14 @@ const ActiveUser=JSON.parse( localStorage.getItem('activeUser'))
         //     uid: user.uid
         // });
         setSwitcheduser(ActiveUser)
-        localStorage.setItem("activeUser", JSON.stringify('child1'))
+        localStorage.setItem("activeUser", JSON.stringify(child))
     }
 
     if (PersonalProfiles.info_type) {
-        setDoc(doc(db, `Users/${user?.uid}/ChildList/child1/data`, "personal_information"), {
+        setDoc(doc(db, `Users/${user?.uid}/ChildList/${child}/data`, "personal_information"), {
             ...PersonalProfiles
         });
-        setDoc(doc(db, `Users/${user?.uid}/ChildList/child1`), {
+        setDoc(doc(db, `Users/${user?.uid}/ChildList/${child}`), {
             ActiveStatus: true,
             uid: user?.uid
         });
@@ -145,6 +146,7 @@ const ActiveUser=JSON.parse( localStorage.getItem('activeUser'))
         const getPersonalInfo = async () => {
             const querySnapshot = await getDocs(collection(db, `Users/${user?.uid}/ChildList/${ActiveUser}/data`));
             querySnapshot.forEach(async (docs) => {
+                
                 setShowedProfile(docs.data())
                 forceUpdate();
             })
@@ -153,10 +155,10 @@ const ActiveUser=JSON.parse( localStorage.getItem('activeUser'))
         setGender(ShowedProfile?.gender)
 
 }, [ShowedProfile?.gender]);
-
+console.log(ShowedProfile)
     return (
         <div className="">
-            <Header></Header>
+            <Header setSwitcheduser={setSwitcheduser} Switcheduser={Switcheduser} setActiveusers={setActiveusers} Activeusers={Activeusers}></Header>
             <h1 className='text-center text-3xl mt-2 font-semibold'>Personal Profile</h1>
             <div className="flex justify-center">
                 <div className="mb-2">
@@ -183,7 +185,7 @@ const ActiveUser=JSON.parse( localStorage.getItem('activeUser'))
                             <label className="label">
                                 <span className="label-text">name <span className=' text-red-600'>*</span></span>
                             </label>
-                            <input type="text" defaultValue={user?.displayName || ShowedProfile?.name} required name="name" placeholder="Mynul" className="input input-bordered w-full max-w-xs" />
+                            <input type="text" defaultValue={ ShowedProfile?.name?ShowedProfile?.name:user.name } required name="name" placeholder="Mynul" className="input input-bordered w-full max-w-xs" />
                             <label className="label">
                             </label>
                         </div>
@@ -229,7 +231,7 @@ const ActiveUser=JSON.parse( localStorage.getItem('activeUser'))
                             <label className="label">
                             </label>
                         </div>
-                        <div>
+                        <div className="form-control  w-full max-w-xs">
                             <label className="label">
                                 <span className="label-text">Gender </span>
                             </label>
